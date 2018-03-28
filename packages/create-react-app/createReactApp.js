@@ -197,7 +197,7 @@ function createApp(name, verbose, version, useNpm, template) {
     process.exit(1);
   }
 
-  if (!semver.satisfies(process.version, '>=6.0.0')) {
+  if (!semver.satisfies(semver.coerce(process.version), '>=6.0.0')) {
     console.log(
       chalk.yellow(
         `You are using Node ${process.version} so the project will be bootstrapped with an old unsupported version of tools.\n\n` +
@@ -528,7 +528,9 @@ function checkNodeVersion(packageName) {
     return;
   }
 
-  if (!semver.satisfies(process.version, packageJson.engines.node)) {
+  if (
+    !semver.satisfies(semver.coerce(process.version), packageJson.engines.node)
+  ) {
     console.error(
       chalk.red(
         'You are running Node %s.\n' +
